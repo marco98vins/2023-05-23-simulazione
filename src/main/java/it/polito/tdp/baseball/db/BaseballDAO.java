@@ -10,12 +10,52 @@ import java.util.List;
 import java.util.Map;
 
 import it.polito.tdp.baseball.model.Appearances;
-import it.polito.tdp.baseball.model.Arco;
+import it.polito.tdp.baseball.model.Nodo;
 import it.polito.tdp.baseball.model.People;
 import it.polito.tdp.baseball.model.Team;
 
 
 public class BaseballDAO {
+	
+	
+	public List<Nodo> getPlayerYearSalary(int anno, int salario){
+		String sql = "SELECT s.playerID, p.nameFirst as nam, p.nameLast as sur, s.year as yea, s.salary as sal, s.teamID as idt "
+				+ "FROM salaries s  "
+				+ "JOIN people p ON s.playerID=p.playerID  "
+				+ "where s.year = ? AND s.salary > ? "
+				+ "ORDER BY s.playerId";
+		List<Nodo> result = new ArrayList<Nodo>();
+
+		try {
+			Connection conn = DBConnect.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, anno);
+			st.setInt(2, salario);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				result.add(new Nodo(rs.getString("playerID"), 
+						rs.getString("nam"), 
+						rs.getString("sur"), 
+						rs.getInt("yea"), 
+						rs.getInt("sal"),
+						rs.getInt("idt")));
+			}
+
+			conn.close();
+			return result;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Errore connessione al database");
+			throw new RuntimeException("Error Connection Database");
+		}
+	}
+	
+	
+	
+	
+	
 	
 	public List<People> readAllPlayers(){
 		String sql = "SELECT * "

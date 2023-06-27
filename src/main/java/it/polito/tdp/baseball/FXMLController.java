@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import it.polito.tdp.baseball.model.Grado;
 import it.polito.tdp.baseball.model.Model;
 import it.polito.tdp.baseball.model.People;
 import javafx.event.ActionEvent;
@@ -56,6 +55,9 @@ public class FXMLController {
     
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	model.clearGraph();
+    	txtResult.setText("Grafo creato. \n"+ model.creaGrafo(Integer.parseInt(txtYear.getText()),
+    			1000000*(Integer.parseInt(txtSalary.getText()))));
     	
     }
 
@@ -68,6 +70,8 @@ public class FXMLController {
     
     @FXML
     void doGradoMassimo(ActionEvent event) {
+    	
+    	
 
     }
 
